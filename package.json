@@ -1,30 +1,53 @@
 {
   "name": "plataforma-escola-saude",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "private": true,
   "type": "module",
-  "description": "Frontend da plataforma de certificados da Escola da Saúde de Santos",
+  "description": "Frontend da Plataforma Escola da Saúde de Santos",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --ext .js,.jsx"
+    "dev:https": "vite --https",
+    "build": "node scripts/gerar-versao-build.mjs && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run format:check",
+    "version:patch": "npm version patch --no-git-tag-version",
+    "version:minor": "npm version minor --no-git-tag-version",
+    "version:major": "npm version major --no-git-tag-version"
+  },
+  "engines": {
+    "node": ">=20.11.0",
+    "npm": ">=10.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "last 2 versions",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.27.6",
     "@headlessui/react": "^2.2.4",
     "@react-oauth/google": "^0.12.2",
-    "@tailwindcss/forms": "^0.5.10",
-    "@tailwindcss/typography": "^0.5.16",
-    "axios": "^1.9.0",
     "chart.js": "^4.5.0",
-    "date-fns": "^4.1.0",
+    "date-fns": "^4.3.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.18.1",
     "html5-qrcode": "^2.3.8",
-    "jspdf": "^3.0.1",
+    "jspdf": "^3.0.4",
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.514.0",
+    "qrcode": "^1.5.4",
     "qrcode.react": "^4.2.0",
     "react": "^18.2.0",
     "react-calendar": "^6.0.0",
@@ -32,25 +55,29 @@
     "react-dom": "^18.2.0",
     "react-input-mask": "^2.0.4",
     "react-loading-skeleton": "^3.5.0",
+    "react-markdown": "^10.1.0",
     "react-modal": "^3.16.3",
-    "react-qr-code": "^2.0.15",
-    "react-router-dom": "^7.6.2",
+    "react-router-dom": "^6.28.1",
     "react-signature-canvas": "^1.1.0-alpha.2",
     "react-toastify": "^11.0.5",
     "trim-canvas": "^0.1.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
     "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.25.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.0.0",
     "postcss": "^8.5.5",
-    "tailwindcss": "^3.4.1",
+    "postcss-nesting": "^13.0.2",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.17",
     "vite": "^6.3.5"
   }
 }

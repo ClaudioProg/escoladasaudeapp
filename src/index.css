@@ -1,77 +1,156 @@
-/* 🔄 Skeleton Loader */
-@import 'react-loading-skeleton/dist/skeleton.css';
+/* ============================================================
+   Escola da Saúde — Tailwind Entry
+   Função:
+   - Carregar Tailwind.
+   - Carregar a base visual global oficial.
+   - Manter apenas estilos específicos de bibliotecas externas.
+   ============================================================ */
 
-/* 🚀 TailwindCSS Directives */
+@import "./styles/base.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ===================================================
-   📸 Estilização do Leitor de QR Code (html5-qrcode)
-=================================================== */
-#leitor-qr #qr-shaded-region > div[style*="background-color: rgb(255, 255, 255)"],
-#leitor-qr #qr-shaded-region *[style*="background-color: rgb(255, 255, 255)"] {
-  display: none !important;
-}
-
-#leitor-qr #qr-shaded-region {
-  background: transparent !important;
-  border: none !important;
-}
+/* ------------------------------------------------------------ */
+   Leitor QR — html5-qrcode
+------------------------------------------------------------ */
 
 #leitor-qr,
 #leitor-qr * {
   background-color: transparent !important;
 }
 
+#leitor-qr #qr-shaded-region,
+#leitor-qr #qr-shaded-region * {
+  background: transparent !important;
+  border: none !important;
+}
+
 #leitor-qr canvas {
-  outline: 2px dashed #4ade80 !important; /* 🟢 Verde Tailwind */
+  outline: 2px dashed var(--brand-900) !important;
   outline-offset: -8px;
+  border-radius: var(--app-radius-md);
 }
 
-/* ===================================================
-   🧩 Campos com ícones à esquerda
-=================================================== */
-.campo-com-icone {
-  @apply relative w-full;
+html.dark #leitor-qr canvas,
+html[data-theme="dark"] #leitor-qr canvas {
+  outline-color: var(--brand-500) !important;
 }
 
-.campo-com-icone .icone-esquerda {
-  @apply absolute left-3 top-2.5 text-gray-400 pointer-events-none;
+/* ------------------------------------------------------------
+   React-Toastify
+------------------------------------------------------------ */
+
+.Toastify__toast-container {
+  z-index: 9999 !important;
 }
 
-.campo {
-  @apply w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 
-    focus:outline-none focus:ring-2 focus:ring-emerald-500;
+.Toastify__toast {
+  min-height: 44px !important;
+  border: 1px solid var(--app-border) !important;
+  border-radius: var(--app-radius-sm) !important;
+  box-shadow: var(--app-shadow-lg) !important;
 }
 
-textarea.campo {
-  @apply resize-y min-h-[100px];
+.Toastify__toast-body {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0.5rem 0.75rem !important;
 }
 
-select.campo,
-input[type="number"].campo {
-  @apply appearance-none;
+.Toastify__toast-theme--colored {
+  color: #fff !important;
 }
 
-/* ===================================================
-   🧱 Estilos de Modais (react-modal)
-=================================================== */
-.overlay,
-.overlayTurma {
-  @apply fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-60 z-[1000];
+.Toastify__toast--success {
+  background: var(--status-success) !important;
 }
 
-.modal,
-.modalTurma {
-  @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-    bg-white p-8 rounded-xl shadow-xl max-w-[600px] w-[90%] z-[1001];
+.Toastify__toast--warning {
+  background: var(--status-warning) !important;
+  color: #111827 !important;
 }
 
-/* ModalTurma com z-index mais alto */
-.modalTurma {
-  @apply max-w-[500px] z-[2001];
+.Toastify__toast--error {
+  background: var(--status-danger) !important;
 }
-.overlayTurma {
-  @apply z-[2000];
+
+.Toastify__toast--info,
+.Toastify__toast--loading {
+  background: var(--status-info) !important;
+}
+
+.Toastify__close-button {
+  color: currentColor !important;
+  opacity: 0.9 !important;
+}
+
+.Toastify__spinner {
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  border-top-color: currentColor !important;
+}
+
+.Toastify__progress-bar {
+  background: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* ------------------------------------------------------------
+   Utilidades específicas
+------------------------------------------------------------ */
+
+@layer utilities {
+  .tap-safe {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      90deg,
+      rgba(148, 163, 184, 0.25) 25%,
+      rgba(148, 163, 184, 0.35) 37%,
+      rgba(148, 163, 184, 0.25) 63%
+    );
+    background-size: 400% 100%;
+    animation: skeleton-shimmer 1.6s ease-in-out infinite;
+  }
+
+  html.dark .skeleton,
+  html[data-theme="dark"] .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(63, 63, 70, 0.25) 25%,
+      rgba(63, 63, 70, 0.4) 37%,
+      rgba(63, 63, 70, 0.25) 63%
+    );
+    background-size: 400% 100%;
+  }
+
+  @keyframes skeleton-shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+
+    100% {
+      background-position: 0 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   Impressão — bibliotecas externas
+------------------------------------------------------------ */
+
+@media print {
+  .Toastify__toast-container {
+    display: none !important;
+  }
 }

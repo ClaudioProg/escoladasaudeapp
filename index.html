@@ -1,31 +1,117 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- 🔖 Título da aplicação -->
+    <!-- CSP deve vir por header via Vercel/Helmet. Não duplicar via meta. -->
+
+    <!-- Mobile / viewport -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+
     <title>Plataforma - Escola da Saúde</title>
 
-    <!-- 🎨 Fonte personalizada -->
+    <meta
+      name="description"
+      content="Plataforma oficial da Escola da Saúde de Santos para inscrições, presença e certificados de eventos."
+    />
+    <meta name="author" content="Escola da Saúde de Santos" />
+
+    <!-- Aparência clara/escura -->
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#14532d"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#0b1220"
+    />
+
+    <!-- PWA -->
+    <meta name="application-name" content="Escola da Saúde" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Escola da Saúde" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Segurança / UX -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Plataforma - Escola da Saúde" />
+    <meta
+      property="og:description"
+      content="Inscrições, presença e certificados de eventos da Escola da Saúde de Santos."
+    />
+    <meta property="og:image" content="/icons/og-image.png" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://accounts.google.com" />
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+
+    <!-- Fontes -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
-    <!-- 🌐 Ícone da página -->
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- Ícones -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" sizes="512x512" href="/icons/maskable-512.png" />
+    <link rel="mask-icon" href="/icons/maskable-512.svg" color="#14532d" />
 
-    <!-- 🧠 Descrição e SEO básico -->
-    <meta name="description" content="Plataforma oficial da Escola da Saúde de Santos para inscrições, presença e certificados de eventos." />
-    <meta name="author" content="Escola da Saúde de Santos" />
+    <!-- Tema inicial antes do React -->
+    <script src="/boot-theme.js"></script>
+
+    <!-- Hint de fonte base -->
+    <style>
+      :root {
+        --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans",
+          "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+      }
+
+      html {
+        font-family: var(--font-sans);
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+    </style>
   </head>
-  <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white font-sans">
-    <!-- ⚛️ Ponto de montagem da aplicação React -->
-    <div id="root"></div>
 
-    <!-- 🚀 Importação do bundle principal -->
+  <body
+    class="bg-white text-gray-900 dark:bg-zinc-950 dark:text-white font-sans min-h-screen"
+  >
+    <noscript>
+      É necessário habilitar JavaScript para usar esta aplicação.
+    </noscript>
+
+    <div id="root"></div>
+    <div id="modal-root"></div>
+
+    <!-- Entrada oficial do Vite em desenvolvimento.
+         Em produção, o Vite substitui por assets com hash automaticamente. -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

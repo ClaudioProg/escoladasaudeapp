@@ -1,45 +1,94 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+// 📁 vite.config.js — Escola da Saúde
+import { defineConfig, loadEnv } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+import { fileURLToPath } from "url";
 
-export default defineConfig({
-  // 🔌 Plugins utilizados no build
-  plugins: [react()],
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-  // 🌐 Proxy para desenvolvimento local
-  server: {
-    proxy: {
-      '/api': 'http://escola-saude-api.onrender.com', // 🔁 Redireciona chamadas para o backend
-    },
-  },
+export default defineConfig(({ mode }) => {
+  const root = process.cwd();
+  const env = loadEnv(mode, root, "");
 
-  // 📦 Correções de importação para evitar 'undefined.createContext'
-  resolve: {
-    alias: {
-      react: path.resolve(__dirname, 'node_modules/react'),
-      'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
-    },
-  },
+  const isProd = mode === "production";
 
-  define: {
-    'process.env': {}, // ⛑️ Evita erros em libs que acessam process.env
-  },
+  const proxyTarget = String(
+    env.VITE_DEV_PROXY_TARGET || "http://localhost:3000"
+  ).replace(/\/+$/, "");
 
-  // 🏗️ Otimização do build: separação de chunks
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          // 🔍 Divisão personalizada de pacotes da pasta node_modules
-          //if (id.includes('node_modules')) {
-         //   if (id.includes('react')) return 'react-vendor';
-          //  if (id.includes('lucide-react')) return 'icons-vendor';
-         //   if (id.includes('react-router-dom')) return 'router-vendor';
-         //   if (id.includes('axios')) return 'axios-vendor';
-         //   return 'vendor';
-         // }
+  const proxySecure = /^https:/i.test(proxyTarget);
+
+  return {
+    base: "/",
+
+    plugins: [react()],
+
+    server: {
+      host: true,
+      port: 5173,
+      strictPort: true,
+
+      hmr: {
+        timeout: 12000,
+        overlay: true,
+      },
+
+      headers: {
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "X-Content-Type-Options": "nosniff",
+      },
+
+      proxy: {
+        "/api": {
+          target: proxyTarget,
+          changeOrigin: true,
+          secure: proxySecure,
+        },
+
+        "/uploads": {
+          target: proxyTarget,
+          changeOrigin: true,
+          secure: proxySecure,
         },
       },
     },
-  },
+
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "src"),
+      },
+    },
+
+    define: {
+      __APP_VERSION__: JSON.stringify(process.env.npm_package_version || "0.0.0"),
+    },
+
+    build: {
+      sourcemap: !isProd,
+      cssCodeSplit: true,
+      minify: isProd ? "esbuild" : false,
+      target: "es2018",
+      reportCompressedSize: true,
+      chunkSizeWarningLimit: 1000,
+      assetsInlineLimit: 4096,
+
+      rollupOptions: {
+        output: {
+          entryFileNames: "assets/[name]-[hash].js",
+          chunkFileNames: "assets/[name]-[hash].js",
+          assetFileNames: "assets/[name]-[hash][extname]",
+
+          manualChunks: {
+            react: ["react", "react-dom", "react-router-dom"],
+            chart: ["chart.js", "react-chartjs-2"],
+            qrcode: ["qrcode"],
+            pdf: ["jspdf", "jspdf-autotable"],
+          },
+        },
+      },
+    },
+
+    envPrefix: "VITE_",
+  };
 });
